@@ -11,9 +11,11 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/machines")
 public class MachineController {
+    private final MachineRepository machineRepository;
 
-    @Autowired
-    private MachineRepository machineRepository;
+    public MachineController(MachineRepository machineRepository) {
+        this.machineRepository = machineRepository;
+    }
 
     @GetMapping
     public List<Machine> getAll() {
@@ -33,18 +35,6 @@ public class MachineController {
     @PostMapping
     public Machine save(@RequestBody Machine machine) {
         return machineRepository.save(machine);
-    }
-
-    @Update("/{id}")
-    public ResponseEntity<Machine> update(@PathVariable String id, @RequestBody Machine machineDetails) {
-        Optional<Machine> machine = machineRepository.findById(id);
-        if (machine.isPresent()) {
-            Machine updatedMachine = machine.get();
-            // TODO criar o update
-            return ResponseEntity.ok(machineDetails);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @DeleteMapping("/{id}")

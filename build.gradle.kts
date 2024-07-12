@@ -27,3 +27,21 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+tasks.register("stage") {
+	dependsOn("build", "clean")
+}
+
+tasks.named("build").configure {
+	mustRunAfter(tasks.named("clean"))
+}
+
+tasks.register<Copy>("copyToLib") {
+	into("$buildDir/libs")
+	from(configurations.getByName("compileClasspath"))
+}
+
+tasks.named("stage").configure {
+	dependsOn(tasks.named("copyToLib"))
+}
+

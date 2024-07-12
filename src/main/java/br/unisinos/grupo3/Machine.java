@@ -8,7 +8,7 @@ public record Machine(
         @Id
         String id,
         String name,
-        String qrCode,
+        byte[] qrCode,
         String dateInserted
 ) {
 
